@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURITY ALERT: ACCESS DENIED</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind for a custom dark theme and Inter font
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dark': '#0f172a', // Slate 900
+                        'secondary-red': '#ef4444', // Red 500
+                        'matrix-green': '#10B981', // Emerald 500 for the matrix code
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base styles for dark, secure feel */
+        body {
+            background-color: #0f172a; 
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Hide any potential scrollbar */
+            position: relative; /* Establish positioning context for layering */
+        }
+
+        /* 1. Matrix Background Canvas */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Layered behind the alert box */
+        }
+
+        /* 2. Access Denied Container Styling (Raised above the matrix) */
+        #accessDenied {
+            background-color: #3f0707; /* Darker red background for depth */
+            color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 4px solid #cc0000; /* Solid red border */
+            position: relative; /* Ensure it is layered */
+            z-index: 10; /* Above the canvas */
+            
+            /* Add high-alert pulsating shadow */
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+            animation: pulse-glow 2s infinite alternate;
+            backdrop-filter: blur(2px); /* Slight blur for the matrix underneath */
+        }
+
+        /* Pulsing Glow Animation */
+        @keyframes pulse-glow {
+            from {
+                box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 0 0 30px rgba(255, 0, 0, 0.4);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(255, 0, 0, 0.6);
+            }
+        }
+
+        /* Title styling with text shadow */
+        #accessDenied h1 {
+            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000;
+        }
+
+        /* Glitch Effect */
+        .glitch-text {
+            animation: text-shadow-glitch 0.5s infinite alternate;
+        }
+
+        @keyframes text-shadow-glitch {
+            0% { text-shadow: 1px 0 0 #ff0000, -1px 0 0 #00ffff; }
+            50% { text-shadow: -1px 0 0 #ff0000, 1px 0 0 #00ffff; }
+            100% { text-shadow: 2px 0 0 #ff0000, -2px 0 0 #00ffff; }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Matrix Background Canvas -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- Access Denied Page -->
+    <div id="accessDenied" class="page-container transition-all duration-500">
+        
+        <div class="text-7xl mb-6 font-extrabold text-secondary-red" role="img" aria-label="Lock Icon">
+            <!-- Security lock SVG icon inline -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto block text-red-500">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+        </div>
+
+        <h1 class="text-5xl font-extrabold mb-4 text-secondary-red uppercase tracking-wider glitch-text">
+            ACCESS DENIED
+        </h1>
+        
+        <p class="text-xl mb-8 font-medium text-red-300">
+            UNAUTHORISED ACCESS ATTEMPT
+        </p>
+        
+        <div class="mt-8 p-6 bg-red-800 bg-opacity-50 rounded-xl border-2 border-red-500 shadow-xl">
+            <p class="font-mono text-sm uppercase tracking-widest text-red-400 mb-3">
+                CRITICAL PROTOCOL VIOLATION
+            </p>
+            <p class="text-lg font-semibold text-white">
+                Contact the CyberSecurity 3 Year.
+                <br> <span class="text-matrix-green">We do not regret for any inconvenience caused.</span>
+            </p>
+        </div>
+    </div>
+    
+    <!-- 3. Matrix Code Rain JavaScript -->
+    <script>
+        window.onload = function() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // --- Canvas Initialization ---
+            let W = canvas.width = window.innerWidth;
+            let H = canvas.height = window.innerHeight;
+
+            // Resize listener for responsiveness
+            window.addEventListener('resize', () => {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+                columns = Math.floor(W / fontSize);
+                drops = Array.from({ length: columns }).fill(0);
+            });
+
+            // --- Matrix Configuration ---
+            // The custom text to be jumbled and scattered everywhere
+            const customText = "CYBER SECURITY 3RD YEAR DATA INTRUSION ALERT "; 
+            const characters = customText.split('');
+            const fontSize = 16;
+            let columns = Math.floor(W / fontSize);
+
+            // Array to hold the y-position of each drop (column)
+            let drops = Array.from({ length: columns }).fill(0);
+
+            // --- Animation Loop ---
+            function drawMatrix() {
+                // Semi-transparent dark background to create the trailing/fading effect
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.05)'; 
+                ctx.fillRect(0, 0, W, H);
+
+                // Styling for the falling text
+                ctx.fillStyle = '#10B981'; // Tailwind 'matrix-green'
+                ctx.font = `${fontSize}px monospace`;
+
+                // Loop over the drop columns
+                for (let i = 0; i < drops.length; i++) {
+                    // Get a random character from the custom text array
+                    const text = characters[Math.floor(Math.random() * characters.length)];
+
+                    // Calculate position
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+
+                    // Draw the character
+                    ctx.fillText(text, x, y);
+
+                    // If the drop reaches the bottom, reset it to the top (1% chance)
+                    if (y > H && Math.random() > 0.99) {
+                        drops[i] = 0;
+                    } else {
+                        // Otherwise, move the drop down
+                        drops[i]++;
+                    }
+                }
+            }
+
+            // Start the matrix animation loop
+            setInterval(drawMatrix, 50); // 50ms update for a fluid rain effect
+        };
+    </script>
+
+</body>
+</html>
