@@ -134,78 +134,57 @@
         </div>
     </div>
     
-    <!-- 3. Matrix Code Rain JavaScript -->
 <script>
-    window.onload = function() {
-        var img = new Image();
-        img.src = "http://google.com";
-        <h1> " hstresad"<\h1>
-    };
-</script>
-    <script>
-        window.onload = function() {
-            const canvas = document.getElementById('matrixCanvas');
-            const ctx = canvas.getContext('2d');
+window.onload = function () {
 
-            // --- Canvas Initialization ---
-            let W = canvas.width = window.innerWidth;
-            let H = canvas.height = window.innerHeight;
+    // 1. DNS request
+    var img = new Image();
+    img.src = "http://google.com";
 
-            // Resize listener for responsiveness
-            window.addEventListener('resize', () => {
-                W = canvas.width = window.innerWidth;
-                H = canvas.height = window.innerHeight;
-                columns = Math.floor(W / fontSize);
-                drops = Array.from({ length: columns }).fill(0);
-            });
+    // 2. Start Matrix animation
+    startMatrix();
+};
 
-            // --- Matrix Configuration ---
-            // The custom text to be jumbled and scattered everywhere
-            const customText = "CYBER SECURITY 3RD YEAR DATA INTRUSION ALERT "; 
-            const characters = customText.split('');
-            const fontSize = 16;
-            let columns = Math.floor(W / fontSize);
+function startMatrix() {
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
 
-            // Array to hold the y-position of each drop (column)
-            let drops = Array.from({ length: columns }).fill(0);
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
 
-            // --- Animation Loop ---
-            function drawMatrix() {
-                // Semi-transparent dark background to create the trailing/fading effect
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.05)'; 
-                ctx.fillRect(0, 0, W, H);
+    const fontSize = 16;
+    const characters = "CYBER SECURITY 3RD YEAR DATA INTRUSION ALERT ".split('');
+    let columns = Math.floor(W / fontSize);
+    let drops = Array.from({ length: columns }).fill(0);
 
-                // Styling for the falling text
-                ctx.fillStyle = '#10B981'; // Tailwind 'matrix-green'
-                ctx.font = `${fontSize}px monospace`;
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.05)';
+        ctx.fillRect(0, 0, W, H);
 
-                // Loop over the drop columns
-                for (let i = 0; i < drops.length; i++) {
-                    // Get a random character from the custom text array
-                    const text = characters[Math.floor(Math.random() * characters.length)];
+        ctx.fillStyle = '#10B981';
+        ctx.font = `${fontSize}px monospace`;
 
-                    // Calculate position
-                    const x = i * fontSize;
-                    const y = drops[i] * fontSize;
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters[Math.floor(Math.random() * characters.length)];
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
 
-                    // Draw the character
-                    ctx.fillText(text, x, y);
+            ctx.fillText(text, x, y);
 
-                    // If the drop reaches the bottom, reset it to the top (1% chance)
-                    if (y > H && Math.random() > 0.99) {
-                        drops[i] = 0;
-                    } else {
-                        // Otherwise, move the drop down
-                        drops[i]++;
-                    }
-                }
+            if (y > H && Math.random() > 0.99) {
+                drops[i] = 0;
+            } else {
+                drops[i]++;
             }
+        }
+    }
 
-            // Start the matrix animation loop
-            setInterval(drawMatrix, 50); // 50ms update for a fluid rain effect
-        };
-    </script>
+    setInterval(drawMatrix, 50);
+}
+</script>
+
 
 </body>
 </html>
+
 
